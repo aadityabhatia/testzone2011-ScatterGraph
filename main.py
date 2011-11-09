@@ -28,8 +28,8 @@ FLOW = OAuth2WebServerFlow(
 		# Visit https://code.google.com/apis/console to
 		# generate your client_id, client_secret and to
 		# register your redirect_uri.
-		client_id='359107155148.apps.googleusercontent.com',
-		client_secret='I2wIACmldoS0SN2JGAUoCZy-',
+		client_id='YOUR_CLIENT_ID_HERE',
+		client_secret='YOUR_CLIENT_SECRET_HERE',
 		scope='https://www.googleapis.com/auth/fusiontables',
 		user_agent='tech-testzone-server/1.0')
 
