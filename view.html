@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Tech Test Zone 2011</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load('visualization', '1',
+	{
+		packages : [ 'corechart' ]
+	});
+	function drawVisualization()
+	{
+		google.visualization.drawChart(
+		{
+			"containerId" : "visualizationDiv",
+			"dataSourceUrl" : 'http://www.google.com/fusiontables/gvizdata?tq=',
+			"query" : "SELECT responseX, responseY FROM 2040387",
+			"refreshInterval" : 30,
+			"chartType" : "ScatterChart",
+			"options" :
+			{
+				"height": window.innerHeight - 30,
+				"title" : "Tech Test Zone responses",
+				"vAxis" :
+				{
+					"title" : "Response Y",
+					minValue : 0,
+					maxValue : 100
+				},
+				"hAxis" :
+				{
+					"title" : "Response X",
+					minValue : 0,
+					maxValue : 100
+				},
+				"legend" : "none"
+			}
+		});
+	}
+	google.setOnLoadCallback(drawVisualization);
+</script>
+</head>
+<body style="border: 0 none;">
+	<div id="visualizationDiv" style="width: 100%"></div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tech Test Zone 2011</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery.ui.all.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jcanvas.min.js"></script>
+</head>
+<body>
+	<style>
+#amountX,#amountY {
+	border: 0;
+	color: #f6931f;
+	font-weight: bold;
+	width: 4em;
+	background-color: #fff;
+	font-size: 150%;
+}
+
+#sliderY {
+	float: left;
+}
+
+canvas {
+	cursor: crosshair;
+	border: black solid 1px;
+}
+
+#submit {
+	width: 5em;
+	height: 5em;
+}
+</style>
+	<script>
+		edgeLength = 400;
+		$(function()
+		{
+			function draw()
+			{
+				$("canvas").clearCanvas();
+				$("canvas").drawArc(
+				{
+					fillStyle : "orange",
+					x : $("canvas").width() * $("#amountX").val() / 100,
+					y : $("canvas").height() * (100 - $("#amountY").val()) / 100,
+					radius : 10
+				});
+			}
+			$("#sliderX").slider(
+			{
+				range : "min",
+				min : 0,
+				max : 100,
+				value : 50,
+				slide : function(event, ui)
+				{
+					$("#amountX").val(ui.value);
+					draw();
+				}
+			});
+			$("#sliderY").slider(
+			{
+				orientation : "vertical",
+				range : "min",
+				min : 0,
+				max : 100,
+				value : 50,
+				slide : function(event, ui)
+				{
+					$("#amountY").val(ui.value);
+					draw();
+				}
+			});
+			$("canvas").mousedown(function(e)
+			{
+				$("#amountX").val(parseInt(e.offsetX * 100 / $("canvas").width()));
+				$("#amountY").val(parseInt(($("canvas").height() - e.offsetY) * 100 / $("canvas").height()));
+				$("#sliderX").slider("value", $("#amountX").val())
+				$("#sliderY").slider("value", $("#amountY").val())
+				draw();
+			});
+			$("#amountX").val($("#sliderX").slider("value"));
+			$("#amountY").val($("#sliderY").slider("value"));
+			$("#sliderX").width(edgeLength);
+			$("#sliderY").height(edgeLength);
+			draw();
+			$("#submit").click(function()
+			{
+				$("#submit").attr('disabled', 'disabled');
+				$.ajax(
+				{
+					type: "POST",
+					url : "/submit",
+					data :
+					{
+						x: $("#amountX").val(),
+						y: $("#amountY").val()
+					},
+					success : function(data, status, jqXHR)
+					{
+						$("canvas").animate(
+						{
+							backgroundColor : "#7f7"
+						}).animate(
+						{
+							backgroundColor : "#fff"
+						}, 2000);
+					},
+					error : function()
+					{
+						$("canvas").animate(
+						{
+							backgroundColor : "#f77"
+						}).animate(
+						{
+							backgroundColor : "#fff"
+						}, 2000);
+					},
+					complete: function()
+					{
+						setTimeout("$('#submit').removeAttr('disabled');", 5000)
+					}
+				});
+			});
+		});
+	</script>
+	<p>
+		<label for="amountX">X:</label> <input type="number" min="0" max="100" id="amountX"
+			disabled="disabled" /> <br> <label for="amountY">Y:</label> <input type="number" min="0"
+			max="100" id="amountY" disabled="disabled" />
+	</p>
+	<br>
+	<div id="sliderX"></div>
+	<div id="sliderY"></div>
+	<canvas id="canvas" width="400" height="400"></canvas>
+	<br>
+	<input type="button" value="Submit" id="submit">
+</body>
+</html>
